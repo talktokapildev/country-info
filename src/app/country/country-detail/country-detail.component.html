@@ -1,0 +1,57 @@
+<label class="mr-1">Region</label>
+<select (change)="OnRegionSelect($event.target.value)">
+  <option value="" [selected]="selectedRegion === ''">--Select Region--</option>
+  <option
+    *ngFor="let region of allRegions$ | async"
+    [value]="region.value"
+    [selected]="region.value === selectedRegion"
+  >
+    {{ region.name }}
+  </option>
+</select>
+<!-- {{ allCountries$ | async | json }} -->
+
+<label class="ml-4 mr-1">Countries</label>
+<select (change)="OnCountrySelect($event.target.value)">
+  <option value="">--Select Country--</option>
+  <option
+    *ngFor="let country of allCountries$ | async"
+    [value]="country.alpha3Code"
+  >
+    {{ country.name }}
+  </option>
+</select>
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Population</th>
+        <th>Capital</th>
+        <th>Currency</th>
+        <th>Flag</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="selectedCountry$ | async as c">
+        <tr>
+          <td class="td-table-region"></td>
+          <td class="td-table-region">{{ c.name }}</td>
+          <td class="td-table-region">{{ c.population }}</td>
+          <td class="td-table-region">{{ c.capital }}</td>
+          <td class="td-table-region">
+            <ng-container *ngFor="let currency of c.currencies">
+              Name:{{ currency.name }}<br />
+              Code:{{ currency.code }}<br />
+              Symbol: {{ currency.symbol }}
+            </ng-container>
+          </td>
+          <td class="td-table-region">
+            <img class="flagImage" src="{{ c.flag }}" />
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
